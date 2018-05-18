@@ -1,5 +1,11 @@
 # Laravel Artisan Command Alias
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/cmizzi/laravel-command-alias.svg?style=flat-square)](https://packagist.org/packages/cmizzi/laravel-command-alias)
+[![Build Status](https://img.shields.io/travis/cmizzi/laravel-command-alias/master.svg?style=flat-square)](https://travis-ci.org/cmizzi/laravel-command-alias)
+[![Total Downloads](https://img.shields.io/packagist/dt/cmizzi/laravel-command-alias.svg?style=flat-square)](https://packagist.org/packages/cmizzi/laravel-command-alias)
+[![GitHub license](https://img.shields.io/github/license/cmizzi/laravel-command-alias.svg)](https://github.com/cmizzi/laravel-command-alias/blob/master/LICENSE)
+
+
 This package allows you to create some aliases for Artisan purpose. It's like `bash`, but for Artisan.
 
 ## Installation
