@@ -1,5 +1,6 @@
 vendor/
 node_modules/
+composer.lock
 npm-debug.log
 
 # Laravel 4 specific
