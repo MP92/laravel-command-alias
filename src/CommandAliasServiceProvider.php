@@ -27,7 +27,7 @@ class CommandAliasServiceProvider extends ServiceProvider {
 		foreach (config('command-alias.commands', []) as $name => $command) {
 			$bind = "command.command-alias:$name";
 
-			$this->app->bind($bind, new GenericCommandAlias($name, $command));
+			$this->app->instance($bind, new GenericCommandAlias($name, $command));
 			$this->commands([$bind]);
 		}
 	}
