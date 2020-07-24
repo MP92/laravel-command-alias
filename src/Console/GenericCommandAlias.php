@@ -2,6 +2,7 @@
 namespace Cmizzi\CommandAlias\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Parser;
 
 class GenericCommandAlias extends Command {
 	/** @var string $alias */
@@ -15,11 +16,19 @@ class GenericCommandAlias extends Command {
 	 * @return void
 	 */
 	public function __construct(string $name, $command) {
-		$this->alias = $command;
-		$this->name = $name;
+        $this->alias = $command;
+        $this->name = $name;
 
-		parent::__construct();
-		$this->setDescription(sprintf('Alias for %s command', $this->getAliasName()));
+        parent::__construct();
+
+        $this->setDescription(sprintf('Alias for %s command', $this->getAliasName()));
+
+        if (is_array($command) && isset($command['signature'])) {
+            [$name, $arguments, $options] = Parser::parse($command['signature']);
+
+            $this->getDefinition()->addArguments($arguments);
+            $this->getDefinition()->addOptions($options);
+        }
 	}
 
 	/**
@@ -28,8 +37,9 @@ class GenericCommandAlias extends Command {
 	 * @return void
 	 */
 	public function handle() {
-		$this->call($this->getAliasName(), $this->getAliasArguments());
-	}
+        $arguments = array_merge($this->getAliasParams(), $this->arguments(), $this->getCmdOptions());
+        $this->call($this->getAliasName(), $arguments);
+    }
 
 	/**
 	 * Returns alias name
@@ -44,16 +54,35 @@ class GenericCommandAlias extends Command {
 		return $this->alias;
 	}
 
-	/**
-	 * Returns alias arguments
-	 *
-	 * @return array
-	 */
-	public function getAliasArguments(): array {
-		if (is_array($this->alias) and is_array(last($this->alias))) {
-			return last($this->alias);
-		}
+    /**
+     * Returns alias arguments
+     *
+     * @return array
+     */
+    public function getAliasParams(): array {
+        if (is_array($this->alias) && isset($this->alias['params']) && is_array($this->alias['params'])) {
+            return $this->alias['params'];
+        }
 
-		return [];
-	}
+        return [];
+    }
+
+    private function getCmdOptions(): array {
+        $ignore = ['help', 'quiet', 'verbose', 'version', 'ansi', 'no-ansi', 'no-interaction', 'env'];
+
+        $options = array_diff_key(
+            $this->options(),
+            array_flip($ignore)
+        );
+
+        return array_combine(
+            array_map(
+                function($key) {
+                    return '--' . $key;
+                },
+                array_keys($options)
+            ),
+            array_values($options)
+        );
+    }
 }

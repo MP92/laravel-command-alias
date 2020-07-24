@@ -12,6 +12,14 @@ return [
 	 */
 	'commands' => [
 		// 'i' => 'inspire',
-		// 'lsr' => ['route:list', ['--reverse' => true]],
+        /*'lsr' => [
+            'name' => 'route:list',
+            'params' => ['--reverse' => true]
+        ],*/
+        /*'mi' => [
+            'name' => 'doctrine:migrations:migrate',
+            'params' => ['--write-sql' => './sql'],
+            'signature' => 'mi {version=latest}'
+        ],*/
 	]
 ];
